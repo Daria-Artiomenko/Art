@@ -11,6 +11,7 @@ import accordion from "./modules/accordion";
 import burger from "./modules/burger";
 import scrolling from "./modules/scrolling";
 import drop from "./modules/drop";
+import checkEmailInputs from "./modules/checkEmailInputs";
 
 window.addEventListener('DOMContentLoaded', () =>{
     'use strict';
@@ -22,6 +23,7 @@ window.addEventListener('DOMContentLoaded', () =>{
     mask('[name="phone"]');
     checkTextInputs('[name="name"]');
     checkTextInputs('[name="message"]');
+    checkEmailInputs('[name=email]');
     showMoreStyles('.button-styles', '#styles .row');
     calc('#size', '#material', '#options', '.promocode', '.calc-price');
     filter();

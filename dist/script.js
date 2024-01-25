@@ -114,6 +114,30 @@ const calc = (size, material, options, promocode, result) => {
 
 /***/ }),
 
+/***/ "./src/js/modules/checkEmailInputs.js":
+/*!********************************************!*\
+  !*** ./src/js/modules/checkEmailInputs.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const checkEmailInputs = selector => {
+  const emailInputs = document.querySelectorAll(selector);
+  emailInputs.forEach(input => {
+    input.addEventListener('keypress', function (e) {
+      if (e.key.match(/[^a-z 0-9 \. @]/ig)) {
+        e.preventDefault();
+      }
+    });
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (checkEmailInputs);
+
+/***/ }),
+
 /***/ "./src/js/modules/checkTextInputs.js":
 /*!*******************************************!*\
   !*** ./src/js/modules/checkTextInputs.js ***!
@@ -135,6 +159,64 @@ const checkTextInputs = selector => {
   });
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (checkTextInputs);
+
+/***/ }),
+
+/***/ "./src/js/modules/drop.js":
+/*!********************************!*\
+  !*** ./src/js/modules/drop.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const drop = () => {
+  const fileInputs = document.querySelectorAll('[name="upload"]');
+  ['dragenter', 'dragleave', 'dragover', 'drop'].forEach(eventName => {
+    fileInputs.forEach(input => {
+      input.addEventListener(eventName, preventDefaults, false);
+    });
+  });
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  function highlight(item) {
+    item.closest('.file_upload').style.border = "5px solid yellow";
+    item.closest('.file_upload').style.backgroundColor = "rgba(0,0,0, .7)";
+  }
+  function unhighlight(item) {
+    item.closest('.file_upload').style.border = "none";
+    if (item.closest('.calc_form')) {
+      item.closest('.file_upload').style.backgroundColor = "#fff";
+    } else {
+      item.closest('.file_upload').style.backgroundColor = "#ededed";
+    }
+  }
+  ['dragenter', 'dragover'].forEach(eventName => {
+    fileInputs.forEach(input => {
+      input.addEventListener(eventName, () => highlight(input), false);
+    });
+  });
+  ['dragleave', 'drop'].forEach(eventName => {
+    fileInputs.forEach(input => {
+      input.addEventListener(eventName, () => unhighlight(input), false);
+    });
+  });
+  fileInputs.forEach(input => {
+    input.addEventListener('drop', e => {
+      input.files = e.dataTransfer.files;
+      let dots;
+      const arr = input.files[0].name.split('.');
+      arr[0].length > 6 ? dots = "..." : dots = '.';
+      const name = arr[0].substring(0, 6) + dots + arr[1];
+      input.previousElementSibling.textContent = name;
+    });
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (drop);
 
 /***/ }),
 
@@ -248,7 +330,7 @@ const forms = () => {
       item.value = '';
     });
     upload.forEach(item => {
-      item.previousElementSibling.textContent = 'Файл не выбран';
+      item.previousElementSibling.textContent = "Файл не выбран";
     });
   };
   upload.forEach(item => {
@@ -519,14 +601,14 @@ const scrolling = upSelector => {
     }
   });
 
-  // Scrolling with request animation frame
+  // Scrolling with raf
 
   let links = document.querySelectorAll('[href^="#"]'),
-    speed = 0.7;
+    speed = 0.3;
   links.forEach(link => {
     link.addEventListener('click', function (event) {
       event.preventDefault();
-      let widthTop = document.documentElement,
+      let widthTop = document.documentElement.scrollTop,
         hash = this.hash,
         toBlock = document.querySelector(hash).getBoundingClientRect().top,
         start = null;
@@ -834,6 +916,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
 /* harmony import */ var _modules_burger__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/burger */ "./src/js/modules/burger.js");
 /* harmony import */ var _modules_scrolling__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/scrolling */ "./src/js/modules/scrolling.js");
+/* harmony import */ var _modules_drop__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/drop */ "./src/js/modules/drop.js");
+/* harmony import */ var _modules_checkEmailInputs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./modules/checkEmailInputs */ "./src/js/modules/checkEmailInputs.js");
+
+
 
 
 
@@ -856,6 +942,7 @@ window.addEventListener('DOMContentLoaded', () => {
   (0,_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name="phone"]');
   (0,_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
   (0,_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]');
+  (0,_modules_checkEmailInputs__WEBPACK_IMPORTED_MODULE_13__["default"])('[name=email]');
   (0,_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
   (0,_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price');
   (0,_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
@@ -863,6 +950,7 @@ window.addEventListener('DOMContentLoaded', () => {
   (0,_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading');
   (0,_modules_burger__WEBPACK_IMPORTED_MODULE_10__["default"])('.burger-menu', '.burger');
   (0,_modules_scrolling__WEBPACK_IMPORTED_MODULE_11__["default"])('.pageup');
+  (0,_modules_drop__WEBPACK_IMPORTED_MODULE_12__["default"])();
 });
 })();
 
